@@ -15,9 +15,10 @@ import (
 )
 
 const (
-	paplayPath       = "/usr/bin/paplay"
-	defaultSoundPath = "./message.ogg"
-	signalBufferSize = 64
+	paplayPath        = "/usr/bin/paplay"
+	defaultSoundPath  = "./message.ogg"
+	signalBufferSize  = 64
+	maxInFlightEvents = 16
 )
 
 type Notifier struct {
@@ -30,7 +31,7 @@ type Notifier struct {
 func NewNotifyer(soundPath string) (n *Notifier) {
 	n = &Notifier{
 		soundPath: soundPath,
-		soundChan: make(chan interface{}),
+		soundChan: make(chan interface{}, maxInFlightEvents),
 		done:      sync.WaitGroup{},
 		stop:      0,
 	}
