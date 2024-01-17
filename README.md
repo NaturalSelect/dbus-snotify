@@ -1,17 +1,12 @@
-# Snotify
-
-[![Go](https://github.com/Kimiblock/snotify/actions/workflows/go.yml/badge.svg)](https://github.com/Kimiblock/snotify/actions/workflows/go.yml)
+# dbus-snotify
 
 Notifications, with sound.
 
-# Packages
+A fork of [Kimiblock/snotify](https://github.com/Kimiblock/snotify).
 
-[AUR](https://aur.archlinux.org/packages/snotify-git)
+## Build
 
-# Usage
-
-Install the AUR package, then enable **user** service `snotify.service`.
-
-# Credits
-
-Cinny for the notification sound.
+```bash
+# Install go 1.21
+make
+```

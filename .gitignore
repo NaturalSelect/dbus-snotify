@@ -1,0 +1,6 @@
+
+# vendor dir
+/vendor
+
+# build dir
+/build
