@@ -49,7 +49,7 @@ docker run \
 **Generate systemd service:**
 
 ```bash
-docker generate systemd --name dbus-snotify -f
+docker generate systemd --new --name dbus-snotify -f
 
 mv container-dbus-snotify.service ~/.config/systemd/user/
 ```
