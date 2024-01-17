@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -17,7 +16,7 @@ import (
 const (
 	paplayPath        = "/usr/bin/paplay"
 	defaultSoundPath  = "./message.ogg"
-	signalBufferSize  = 64
+	signalBufferSize  = 16
 	maxInFlightEvents = 16
 )
 
@@ -44,6 +43,7 @@ func (n *Notifier) startMonitor() {
 	n.done.Add(1)
 	go func() {
 		defer n.done.Done()
+		defer close(n.soundChan)
 		cmd := exec.Command("dbus-monitor", "path='/org/freedesktop/Notifications',interface='org.freedesktop.Notifications',member='Notify'")
 		stdout, err := cmd.StdoutPipe()
 		if err != nil {
@@ -51,7 +51,7 @@ func (n *Notifier) startMonitor() {
 		}
 		defer stdout.Close()
 		if err := cmd.Start(); err != nil {
-			fmt.Println("Error starting dbus-monitor:", err)
+			log.Errorf("Error starting dbus-monitor: %v", err)
 			return
 		}
 		reader := bufio.NewReader(stdout)
@@ -66,7 +66,6 @@ func (n *Notifier) startMonitor() {
 				n.soundChan <- 1
 			}
 		}
-		defer close(n.soundChan)
 		cmd.Process.Kill()
 		if err = cmd.Wait(); err != nil {
 			log.Errorf("Failed to wait process stop, %v", err)
